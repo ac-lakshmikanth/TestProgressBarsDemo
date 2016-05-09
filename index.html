@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
+	<title>Test Progress Bars</title>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge'></meta>
+	<meta name='viewport' content='width=device-width,initial-scale=1.0'></meta>
+	<link rel='stylesheet' href='css/styles.min.css'></link>
+	<script type src='lib/ractive.js'></script>
+</head>
+<body>
+<div class='TestProgressBarContainer'>
+	<h1>Test Progress Bars</h1>
+	<div class='ProgressBarDisplay'>		
+	</div>
+	<!--
+	<script id='ProgressBarTemplate' type='text/html'>
+		{{#each progressBars:index}}
+		<div class='divPosition divMain'>
+		<div class='divPosition divProgressBar' style='width:{{width}}%;background-color:{{bgColor}};'></div>			
+		<div class='divPosition divProgressState'>{{width}}%</div>
+		</div>
+		{{/each}}
+
+		<div class='ProgressBarActions'>
+		<select class='SelectProgressBar' value='{{selectedProgressBar}}'>
+			{{#each progressBars:index}}
+			<option value='{{name}}'>{{name}}</option>
+			{{/each}}
+		</select>
+
+		{{#each progressBarActions:index}}
+			<button class='btn' type='button' on-click='onChangeProgress:{{this}}'>{{this}}</button>
+		{{/each}}
+		</div>
+	</script>
+	-->
+	<script type src='js/ProgressBars.min.js'></script>
+</div>
+</body>
+</html>
