@@ -4,12 +4,14 @@
 // 2. Using partials like below with the use of a string and partials: {} setting
 // 3. Here method (2) is used to support the test cases execution using karma-jasmine
 
-var templateString = "{{#each progressBars:index}}"+
-		     "<div class='divPosition divMain'>"+
-		"<div class='divPosition divProgressBar' style='width:{{width}}%;background-color:{{bgColor}};'>&nbsp;</div>"+			
-		"<div class='divPosition divProgressState'>{{width}}%</div>"+
+var templateString = "<div class='ProgressBarDisplayContainer'>"+
+		     "{{#each progressBars:index}}"+	
+		     "<div class='divPosition'>"+
+		"<div class='divPosition divProgressBar' style='width:{{width}}%;background-color:{{bgColor}};'></div>"+			
+		"<div class='divPosition divProgressState'>{{progressBarValue}}%</div>"+
 		"</div>"+
 		"{{/each}}"+
+		"</div>"+
 		"<div class='ProgressBarActions'>"+
 		"<select class='SelectProgressBar' value='{{selectedProgressBar}}'>"+
 			"{{#each progressBars:index}}"+
@@ -34,7 +36,10 @@ var progressBars = new Ractive({
 	template: templateString,//'#ProgressBarTemplate',
 
 	// animation duration in milliseconds
-	progressAnimDuration: 3000,
+	progressAnimDuration: 270,
+
+	// animation style
+	progressAnimStyle: 'easeInOut',
 
 	// colors to be used with progress bar for valid and invalid progress range value
 	colors: {
@@ -45,9 +50,9 @@ var progressBars = new Ractive({
 	// data to be used to make the component interactive
 	data: {
 		progressBars: {
-			'ProgressBar1': {name:'ProgressBar1',width:'70',bgColor:'lightblue'},	
-			'ProgressBar2': {name:'ProgressBar2',width:'30',bgColor:'lightblue'},	
-			'ProgressBar3': {name:'ProgressBar3',width:'70',bgColor:'lightblue'}	
+			'ProgressBar1': {name:'ProgressBar1',width:'70',progressBarValue:'70',bgColor:'lightblue'},	
+			'ProgressBar2': {name:'ProgressBar2',width:'30',progressBarValue:'30',bgColor:'lightblue'},	
+			'ProgressBar3': {name:'ProgressBar3',width:'70',progressBarValue:'70',bgColor:'lightblue'}	
 		},
 		progressBarActions: ['-25','-10','+10','+25'],
 		selectedProgressBar: 'ProgressBar2'
@@ -59,28 +64,33 @@ var progressBars = new Ractive({
 	},
 
 	// this is the event called with click of each button that changes state of progress bar
-	onChangeProgress: function(event,changeByValue){
+	onChangeProgress: function(event,changeByValue) {
 		changeByValue = parseInt(changeByValue,10);
 		var currentProgressBar = this.get('selectedProgressBar');
-		var currentValue = parseInt(this.get('progressBars')[currentProgressBar].width,10);
+		var currentValue = parseInt(this.get('progressBars')[currentProgressBar].progressBarValue,10);
 		var updateObj = this.getProgressBarNewState(changeByValue,currentValue);
-		this.animate('progressBars.'+currentProgressBar+'.width',updateObj.newValue,{duration:this.progressAnimDuration});
-		this.animate('progressBars.'+currentProgressBar+'.bgColor', updateObj.isExceeded ? this.colors.invalidState : this.colors.validState,{duration:this.progressAnimDuration});
+		this.animate('progressBars.'+currentProgressBar+'.width',updateObj.newValue,{duration:this.progressAnimDuration,easing:this.progressAnimStyle});
+		this.animate('progressBars.'+currentProgressBar+'.progressBarValue',updateObj.newState,{duration:0,easing:this.progressAnimStyle});
+		this.animate('progressBars.'+currentProgressBar+'.bgColor', updateObj.isExceeded ? this.colors.invalidState : this.colors.validState,{duration:this.progressAnimDuration,easing:this.progressAnimStyle});
+
 	},
 
 	// calculation logic is seperated to ensure that test cases can be tested without depending on DOM
 	getProgressBarNewState: function(changeByValue,currentValue) {
-		var newValue = 0,
+		var newValue = 0, newState=0,
 		calcValue = parseInt((currentValue+changeByValue),10),
 		isExceeded = false;
 		if(calcValue>100) {
 			newValue = 100;
+			newState = calcValue;
 			isExceeded = true;
 		} else if(calcValue<=0) {
 			newValue = 0;
+			newState = 0;
 		} else {
 			newValue = calcValue;
+			newState = calcValue;
 		}
-		return {newValue:newValue, isExceeded:isExceeded};
+		return {newValue:newValue, newState:newState, isExceeded:isExceeded};
 	}
 });

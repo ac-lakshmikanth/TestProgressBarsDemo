@@ -1,13 +1,23 @@
+
+$media_query_point: 800px;
+$action_controls_height_xs: 30px;
+$action_controls_height_sm: 25px;
+$main_container_width_xs: 94%;
+$main_container_width_sm: 50%;
+$sub_container_width_xs: 94%;
+$sub_container_width_sm: 80%;
+
 .TestProgressBarContainer {
-	width: 94%;
- 	margin-left: 3%;
-	margin-right: 3%;
+	width: $main_container_width_xs;
+ 	margin-left: (100-$main_container_width_xs)/2;
+	margin-right: (100-$main_container_width_xs)/2;
 	border: 1px solid grey;
 	margin-top: 15px;
-	@media screen and (min-width:800px) {
-		width: 60%;
-	 	margin-left: 20%;
-		margin-right: 20%;
+	padding-bottom: 30px;
+	@media screen and (min-width:$media_query_point) {
+		width: $main_container_width_sm;
+	 	margin-left: (100-$main_container_width_sm)/2;
+		margin-right: (100-$main_container_width_sm)/2;
 		margin-top: 50px;
 	}
 	h1 {
@@ -15,21 +25,30 @@
 	}
 }
 
+.ProgressBarDisplayContainer, .ProgressBarActions {
+	width: $sub_container_width_xs;
+ 	margin-left: (100-$sub_container_width_xs)/2;
+	margin-right: (100-$sub_container_width_xs)/2;
+	@media screen and (min-width:$media_query_point) {
+		width: $sub_container_width_sm;
+	 	margin-left: (100-$sub_container_width_sm)/2;
+		margin-right: (100-$sub_container_width_sm)/2;
+	}
+}
 
 .ProgressBarDisplay {
 	.divPosition {
 		position:relative;
-	}
-	.divMain {	
-		border: 1px solid grey;
+		height: 20px;
+		margin-bottom: 20px;
 	}
 	.divProgressBar {
-		margin-bottom:10px;
-		border: 1px solid grey;
+		margin-bottom: 9px;
 		height: 20px;
 	}
 	.divProgressState {
 		width:100%;
+		border: 1px solid rgba(128, 128, 128, 0.38);
 		top:-30px;
 		height: 20px;
 		text-align: center;
@@ -38,26 +57,26 @@
 
 .ProgressBarActions {
 	margin-top: 10px;
-	text-align:center;
 }
 
 .SelectProgressBar {
 	width: 100%;
-	height: 30px;
+	height: $action_controls_height_xs;
 	margin-bottom: 10px;
-	@media screen and (min-width:800px) {
-		height: 30px;
-		width: 130px;	
+	margin-right: 5px;
+	@media screen and (min-width:$media_query_point) {
+		height: $action_controls_height_sm;
+		width: 120px;	
 	}
 }
 
 .btn {
 	width: 100%;
-	height: 30px;
+	height: $action_controls_height_xs;
 	margin-bottom: 10px;
-	@media screen and (min-width:800px) {
-		width: 100px;
-		height: 30px;
-		margin: 0px 10px;
+	@media screen and (min-width:$media_query_point) {
+		width: 70px;
+		height: $action_controls_height_sm;
+		margin: 0px 5px;
 	}
 }
